@@ -3,8 +3,6 @@ package lc.lcaccounts.entidades;
 import lc.lcaccounts.LCAccounts;
 import lc.lcaccounts.seguridad.EncriptadorAES;
 import lc.lcaccounts.utilidades.Util;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 
 import javax.crypto.BadPaddingException;
@@ -15,13 +13,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.UUID;
 
 public class Database {
 
@@ -57,7 +53,7 @@ public class Database {
     }
 
     private static void crearTabla() throws SQLException {
-        String update_accounts = "CREATE TABLE IF NOT EXISTS Cuentas (`ID` INTEGER AUTO_INCREMENT UNIQUE, `Player` VARCHAR(24) UNIQUE, `Password` VARCHAR(100), `ultimaSalida` DATETIME, `Premium` BOOLEAN, `UltimaIP` VARCHAR(16), PRIMARY KEY (`ID`), KEY (`Player`))";
+        String update_accounts = "CREATE TABLE IF NOT EXISTS Cuentas (`ID` INTEGER AUTO_INCREMENT UNIQUE, `Player` VARCHAR(24) UNIQUE, `Password` VARCHAR(100), `ultimaSalida` VARCHAR(24), `Premium` BOOLEAN, `UltimaIP` VARCHAR(16), PRIMARY KEY (`ID`), KEY (`Player`))";
 
         Statement update = connection.createStatement();
         update.execute(update_accounts);
@@ -117,10 +113,8 @@ public class Database {
                 }else
                     profile.setContrasenia(encriptador.desencriptar(resultSet.getString("Password"), LCAccounts.clave));
                 if(resultSet.getTimestamp("ultimaSalida") == null) profile.setLastQuit(null);
-                else profile.setLastQuit(resultSet.getTimestamp("ultimaSalida"));
-            }else
-                createProfile(profile);
-
+                else profile.setLastQuit(resultSet.getString("ultimaSalida"));
+            }
         } catch (SQLException | UnsupportedEncodingException | NoSuchAlgorithmException | InvalidKeyException |
                  NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException Exception) {
             Util.console("&c[LCAccounts] Excepcion cargando Cuenta de "+profile.getNombre()+". (Talvez cuenta Premium invalida)");
@@ -132,7 +126,7 @@ public class Database {
 
 
     }
-    private static void createProfile(LCProfile profile) {
+    public static void createProfile(LCProfile profile) {
         PreparedStatement statement = null;
         try {
 
@@ -207,7 +201,7 @@ public class Database {
                 preparedStatement.setString(2, encriptador.encriptar(jug.getLastIP(), LCAccounts.clave));
 
                 preparedStatement.setString(3, encriptador.encriptar(jug.getContrasenia(), LCAccounts.clave));
-                preparedStatement.setTimestamp(4, jug.getLastQuit());
+                preparedStatement.setString(4, jug.getLastQuit());
                 if(jug.isPremium()){
                     preparedStatement.setInt(5, 1);
                 }else{
@@ -217,7 +211,7 @@ public class Database {
                 preparedStatement.setString(6,encriptador.encriptar( jug.getLastIP(), LCAccounts.clave));
 
                 preparedStatement.setString(3, encriptador.encriptar(jug.getContrasenia(), LCAccounts.clave));
-                preparedStatement.setTimestamp(8, jug.getLastQuit());
+                preparedStatement.setString(8, jug.getLastQuit());
                 if(jug.isPremium()){
                     preparedStatement.setInt(9, 1);
                 }else{

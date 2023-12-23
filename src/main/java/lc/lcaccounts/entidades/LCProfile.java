@@ -11,12 +11,13 @@ public class LCProfile {
 
     public static final Map<String, LCProfile> profiles = new HashMap<>();
     private final String nombre;
-    private Timestamp lastQuit;
+    private String lastQuit;
     private ProxiedPlayer player;
     private UUID uuid;
     private String contrasenia;
 
     private boolean authLogged = false;
+    private boolean registered = false;
 
     private String lastIP;
     private boolean premium;
@@ -38,6 +39,14 @@ public class LCProfile {
         LCProfile newProfile = new LCProfile(name);
         profiles.put(name, newProfile);
         return newProfile;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
     }
 
     public void setContrasenia(String contrasenia) {
@@ -68,11 +77,11 @@ public class LCProfile {
         this.player = player;
     }
 
-    public Timestamp getLastQuit() {
+    public String getLastQuit() {
         return lastQuit;
     }
 
-    public void setLastQuit(Timestamp lastQuit) {
+    public void setLastQuit(String lastQuit) {
         this.lastQuit = lastQuit;
     }
 
