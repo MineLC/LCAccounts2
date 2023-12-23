@@ -1,0 +1,8 @@
+MySQL:
+  Address: localhost
+  Puerto: 3306
+  Database: MineLCNetwork
+  Usuario: root
+  Password: ''
+Encriptador:
+  Clave: "4CTzUv"

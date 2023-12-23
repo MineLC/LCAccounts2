@@ -1,0 +1,3 @@
+name: LCAccounts
+version: '${version}'
+main: lc.lcaccounts.LCAccounts
