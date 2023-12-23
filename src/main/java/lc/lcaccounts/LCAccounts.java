@@ -34,6 +34,7 @@ public final class LCAccounts extends Plugin {
             getProxy().stop();
             return;
         }
+        premiums.addAll(Database.getPremiums());
         Util.console("&a[LCAccounts] ¡Conexión realizada con la base de datos!");
         checkearConexion();
         getProxy().getPluginManager().registerListener(this, new LoginEvent());
