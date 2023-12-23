@@ -18,6 +18,7 @@ import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -233,7 +234,7 @@ public class Database {
     public static void deleteProfile(LCProfile profile) {
         PreparedStatement statement = null;
         try{
-            String delete = "DELETE FROM `s117_Accounts`.`Cuentas` WHERE  `Player`=?;";
+            String delete = "DELETE FROM `Cuentas` WHERE  `Player`=?;";
             statement = connection.prepareStatement(delete);
             statement.setString(1, profile.getNombre());
             int eliminateds = statement.executeUpdate();
@@ -248,5 +249,29 @@ public class Database {
         }finally {
             close(statement);
         }
+    }
+
+    public static ArrayList<String> getPlayerbyIP(LCProfile ap) {
+        ArrayList<String> list = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            String queryBuilder = "SELECT * " +
+                    "FROM `Cuentas` " +
+                    "WHERE `IP` = ? ;";
+            preparedStatement = connection.prepareStatement(queryBuilder);
+            preparedStatement.setString(1, ap.getLastIP());
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet != null && resultSet.next()) {
+                String player = resultSet.getString("Player");
+                list.add(player);
+            }
+        } catch (Exception sqlException) {
+            throw new RuntimeException(sqlException);
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+        }
+        return list;
     }
 }
