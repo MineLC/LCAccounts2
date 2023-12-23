@@ -1,6 +1,5 @@
 package lc.lcaccounts.configuration;
 
-import lc.lcaccounts.LCAccounts;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;

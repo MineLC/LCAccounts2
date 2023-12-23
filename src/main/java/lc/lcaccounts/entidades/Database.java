@@ -19,6 +19,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Database {
 
@@ -273,5 +275,29 @@ public class Database {
             close(preparedStatement);
         }
         return list;
+    }
+
+    public static ArrayList<String> getPremiums() {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<String> premiums = new ArrayList<>();
+        try {
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("SELECT * ");
+            queryBuilder.append("FROM `Cuentas` ");
+            queryBuilder.append("WHERE `Premium` = 1;");
+            preparedStatement = connection.prepareStatement(queryBuilder.toString());
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet != null)
+                while (resultSet.next()) {
+                    premiums.add(resultSet.getString("Player"));
+                }
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+        } finally {
+            close(preparedStatement);
+            close(resultSet);
+        }
+        return premiums;
     }
 }
