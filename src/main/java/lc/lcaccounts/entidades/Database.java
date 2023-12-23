@@ -229,4 +229,24 @@ public class Database {
             }
         });
     }
+
+    public static void deleteProfile(LCProfile profile) {
+        PreparedStatement statement = null;
+        try{
+            String delete = "DELETE FROM `s117_Accounts`.`Cuentas` WHERE  `Player`=?;";
+            statement = connection.prepareStatement(delete);
+            statement.setString(1, profile.getNombre());
+            int eliminateds = statement.executeUpdate();
+
+            if(eliminateds != 0){
+                Util.console("&a[LCAccounts] Se ha eliminado la cuenta &e"+profile.getNombre()+" &aéxitosamente");
+            }else{
+                Util.console("&c[LCAccounts] No se ha podido eliminar la cuenta &4"+profile.getNombre()+"&c.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            close(statement);
+        }
+    }
 }

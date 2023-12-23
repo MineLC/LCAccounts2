@@ -111,6 +111,9 @@ public class LoginEvent implements Listener {
             profile.setLastQuit(hourdateFormat.format(date));
             Database.saveProfile(profile);
         }
+        if(profile.getContrasenia() == null){
+            Database.deleteProfile(profile);
+        }
         LCProfile.profiles.remove(LCProfile.getProfile(e.getPlayer().getName()));
     }
 }
