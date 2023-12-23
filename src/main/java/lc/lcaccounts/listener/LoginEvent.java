@@ -58,17 +58,18 @@ public class LoginEvent implements Listener {
             jug.setUuid(e.getPlayer().getUniqueId());
             if (e.getPlayer().getPendingConnection().isOnlineMode()){
                 jug.setAuthLogged(true);
+                jug.setCaptcha(true);
                 jug.setLastIP(e.getPlayer().getPendingConnection().getAddress().getHostString());
                 Database.saveProfile(jug);
                 LCAccounts.premiums.add(e.getPlayer().getName());
                 return;
             }
-            if(e.getPlayer().getPendingConnection().getAddress().getHostString().equals(jug.getContrasenia())){
+            if(e.getPlayer().getPendingConnection().getAddress().getHostString().equals(jug.getLastIP())){
                 jug.setAuthLogged(true);
+                jug.setCaptcha(true);
                 jug.setLastIP(e.getPlayer().getPendingConnection().getAddress().getHostString());
                 Database.saveProfile(jug);
             }
-
         });
 
     }

@@ -20,6 +20,7 @@ public class LCProfile {
     private boolean registered = false;
 
     private String lastIP;
+    private boolean captcha = false;
     private boolean premium;
 
     public LCProfile(String nombre) {
@@ -107,5 +108,13 @@ public class LCProfile {
 
     public UUID getUUID() {
         return uuid;
+    }
+
+    public boolean isCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(boolean b) {
+        this.captcha = b;
     }
 }
